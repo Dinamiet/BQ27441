@@ -13,7 +13,7 @@ typedef size_t (*BQ27441_MemWriteInterface)(const I2CDevice* device, const uint1
 
 typedef struct _BQ27441_
 {
-	I2CDevice*                Device;
+	const I2CDevice*          Device;
 	BQ27441_ReadInterface     Read;
 	BQ27441_WriteInterface    Write;
 	BQ27441_MemReadInterface  MemRead;
@@ -22,7 +22,7 @@ typedef struct _BQ27441_
 
 void BQ27441_Init(
 		BQ27441*                        bq,
-		I2CDevice*                      device,
+		const I2CDevice*                device,
 		const BQ27441_ReadInterface     read_interface,
 		const BQ27441_WriteInterface    write_interface,
 		const BQ27441_MemReadInterface  mem_read_interface,
