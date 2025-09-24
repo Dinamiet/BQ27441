@@ -25,14 +25,14 @@ typedef enum _BQ27441CapacityType_
 	BQ27441_CAPACITY_FULL,                  /** Fully charged capacity (regulary updated) */
 	BQ27441_CAPACITY_REMAINING_COMPENSATED, /** Remaining capcacity compensated for load and temperature */
 	BQ27441_CAPACITY_FULL_COMPENSATED,      /** Fully charged capacity compensated for load and temperature (regulary updated) */
-	BQ27411_CAPACITY_DESIGNED,              /** Designed capacity */
+	BQ27441_CAPACITY_DESIGNED,              /** Designed capacity */
 } BQ27441CapacityType;
 
 typedef enum _BQ27441TemperatureType_
 {
-	BQ27411_TEMPERATURE_BATTERY,
-	BQ27411_TEMPERATURE_INTERNAL,
-} BQ27411TemperatureType;
+	BQ27441_TEMPERATURE_BATTERY,
+	BQ27441_TEMPERATURE_INTERNAL,
+} BQ27441TemperatureType;
 
 typedef struct _BQ27441_
 {
@@ -60,8 +60,8 @@ bool BQ27441_Current(BQ27441* bq, BQ27441CurrentType type, int16_t* current);
 bool BQ27441_Capacity(BQ27441* bq, BQ27441CapacityType type, uint16_t* capacity);
 bool BQ27441_Power(BQ27441* bq, uint16_t* power);
 bool BQ27441_StateOfCharge(BQ27441* bq, uint16_t* soc);
-bool BQ27441_StateOfHealth(BQ27441* bq, uint16_t* soh);
-bool BQ27441_Temperature(BQ27441* bq, uint16_t* temp);
+bool BQ27441_StateOfHealth(BQ27441* bq, uint8_t* soh);
+bool BQ27441_Temperature(BQ27441* bq, BQ27441TemperatureType type, uint16_t* temp);
 
 /** GPIO Control commands */
 /** TODO: GPIO control */
