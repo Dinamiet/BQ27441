@@ -1,5 +1,5 @@
 #include "bq27441.h"
-#include "registers.h"
+#include "commands.h"
 
 bool BQ27441_Voltage(BQ27441* bq, uint16_t* voltage)
 {
@@ -59,15 +59,15 @@ bool BQ27441_Power(BQ27441* bq, uint16_t* power)
 	return bq->Read(bq->Device, address, power, sizeof(*power)) == sizeof(*power);
 }
 
-bool BQ27441_StateOfCharge(BQ27441* bq, uint16_t* soc)
+bool BQ27441_StateOfCharge(BQ27441* bq, uint8_t* soc)
 {
 	BQ27441Address address = {.Memory = COMMAND_SOC, .Mode = ADDRESS_MEMORY_8};
 	return bq->Read(bq->Device, address, soc, sizeof(*soc)) == sizeof(*soc);
 }
 
-bool BQ27441_StateOfHealth(BQ27441* bq, BQ27441StateOfHealth* soh)
+bool BQ27441_StateOfHealth(BQ27441* bq, BQ27441StateOfHealthType type, uint8_t* soh)
 {
-	BQ27441Address address = {.Memory = COMMAND_SOH, .Mode = ADDRESS_MEMORY_8};
+	BQ27441Address address = {.Memory = COMMAND_SOH + type, .Mode = ADDRESS_MEMORY_8};
 	return bq->Read(bq->Device, address, soh, sizeof(*soh)) == sizeof(*soh);
 }
 
