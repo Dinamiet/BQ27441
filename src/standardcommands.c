@@ -53,7 +53,7 @@ bool BQ27441_Power(BQ27441* bq, uint16_t* power) { return bq->MemRead(bq->Device
 
 bool BQ27441_StateOfCharge(BQ27441* bq, uint16_t* soc) { return bq->MemRead(bq->Device, COMMAND_SOC, soc, sizeof(*soc)) == sizeof(*soc); }
 
-bool BQ27441_StateOfHealth(BQ27441* bq, uint8_t* soh)
+bool BQ27441_StateOfHealth(BQ27441* bq, BQ27441StateOfHealth* soh)
 {
 	return bq->MemRead(bq->Device, COMMAND_SOH, soh, sizeof(*soh)) == sizeof(*soh);
 }
@@ -72,4 +72,9 @@ bool BQ27441_Temperature(BQ27441* bq, BQ27441TemperatureType type, uint16_t* tem
 	}
 
 	return bq->MemRead(bq->Device, address, temp, sizeof(*temp)) == sizeof(*temp);
+}
+
+bool BQ27441_Flags(BQ27441* bq, BQ27441Flags* flags)
+{
+	return bq->MemRead(bq->Device, COMMAND_FLAGS, flags, sizeof(*flags)) == sizeof(*flags);
 }

@@ -3,6 +3,7 @@
 
 #define COMMAND_TEMPERATURE_BATTERY  0x02
 #define COMMAND_VOLTAGE              0x04
+#define COMMAND_FLAGS                0x06
 #define COMMAND_CAPACITY_REMAIN      0x08
 #define COMMAND_CURRENT_AVG          0x10
 #define COMMAND_CURRENT_STANDBY      0x12

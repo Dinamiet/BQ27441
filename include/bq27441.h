@@ -34,6 +34,34 @@ typedef enum _BQ27441TemperatureType_
 	BQ27441_TEMPERATURE_INTERNAL,
 } BQ27441TemperatureType;
 
+/** TODO: reference fields to datasheet, and comment each field in detail (same for other structures and enums) */
+typedef union _BQ27441Flags_
+{
+	uint16_t Value;
+	struct
+	{
+		uint16_t Discharging              : 1;
+		uint16_t SOCFinalThreshold        : 1;
+		uint16_t SOCSetThreshold          : 1;
+		uint16_t BatteryDetected          : 1;
+		uint16_t ConfigUpdateMode         : 1;
+		uint16_t ResetOccured             : 1;
+		uint16_t                          : 1;
+		uint16_t OCVTaken                 : 1;
+		uint16_t FastChargingAllowed      : 1;
+		uint16_t FullChargeDetected       : 1;
+		uint16_t                          : 4;
+		uint16_t UnderTemperatureDetected : 1;
+		uint16_t OverTemperatureDetected  : 1;
+	};
+} BQ27441Flags;
+
+typedef struct _BQ27441StateOfHealth_
+{
+	uint8_t Percentage;
+	uint8_t Status;
+} BQ27441StateOfHealth;
+
 typedef struct _BQ27441_
 {
 	const I2CDevice*          Device;
@@ -54,14 +82,15 @@ void BQ27441_Init(
 /** Battery Parameter configuration */
 bool BQ27441_SetDesignCapacity(BQ27441* bq, uint16_t capacity);
 
-/** Battery Characteristics */
+/** Standard commands */
 bool BQ27441_Voltage(BQ27441* bq, uint16_t* voltage);
 bool BQ27441_Current(BQ27441* bq, BQ27441CurrentType type, int16_t* current);
 bool BQ27441_Capacity(BQ27441* bq, BQ27441CapacityType type, uint16_t* capacity);
 bool BQ27441_Power(BQ27441* bq, uint16_t* power);
 bool BQ27441_StateOfCharge(BQ27441* bq, uint16_t* soc);
-bool BQ27441_StateOfHealth(BQ27441* bq, uint8_t* soh);
+bool BQ27441_StateOfHealth(BQ27441* bq, BQ27441StateOfHealth* soh);
 bool BQ27441_Temperature(BQ27441* bq, BQ27441TemperatureType type, uint16_t* temp);
+bool BQ27441_Flags(BQ27441* bq, BQ27441Flags* flags);
 
 /** GPIO Control commands */
 /** TODO: GPIO control */
