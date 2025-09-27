@@ -1,6 +1,7 @@
 #include "extended.h"
 
 #include "commands.h"
+#include "sum8.h"
 
 #define BLOCK_SIZE 32
 
@@ -29,9 +30,7 @@ bool extended_Write(BQ27441* bq, uint8_t classID, uint8_t offset, void* data, si
 	if (!blockData_Read(bq, 0, blockData, sizeof(blockData)))
 		return false;
 
-	uint8_t checksum = 0;
-	for (uint8_t i = 0; i < BLOCK_SIZE; i++) { checksum += blockData[i]; }
-	checksum = 255 - checksum;
+	uint8_t checksum = ~SUM8(blockData, sizeof(blockData));
 
 	if (!blockData_WriteChecksum(bq, checksum))
 		return false;
