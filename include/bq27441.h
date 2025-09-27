@@ -112,7 +112,7 @@ void BQ27441_Init(BQ27441* bq, const BQ27441Device* device, const BQ27441_ReadIn
 bool BQ27441_Voltage(BQ27441* bq, uint16_t* voltage);
 bool BQ27441_Current(BQ27441* bq, BQ27441CurrentType type, int16_t* current);
 bool BQ27441_Capacity(BQ27441* bq, BQ27441CapacityType type, uint16_t* capacity);
-bool BQ27441_Power(BQ27441* bq, uint16_t* power);
+bool BQ27441_Power(BQ27441* bq, int16_t* power);
 bool BQ27441_StateOfCharge(BQ27441* bq, uint8_t* soc);
 bool BQ27441_StateOfHealth(BQ27441* bq, BQ27441StateOfHealthType type, uint8_t* soh);
 bool BQ27441_Temperature(BQ27441* bq, BQ27441TemperatureType type, uint16_t* temp);
@@ -132,11 +132,5 @@ bool BQ27441_Configure(BQ27441* bq, uint16_t capacity, uint16_t terminateVoltage
 
 /** GPIO Control commands */
 /** TODO: GPIO control */
-
-/** Control subcommands */
-/** TODO: Control subcommands */
-
-/** Extended Data Commands */
-/** TODO: Extended Data Commands */
 
 #endif

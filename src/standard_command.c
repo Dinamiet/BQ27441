@@ -53,7 +53,7 @@ bool BQ27441_Capacity(BQ27441* bq, BQ27441CapacityType type, uint16_t* capacity)
 	return bq->Read(bq->Device, address, capacity, sizeof(*capacity)) == sizeof(*capacity);
 }
 
-bool BQ27441_Power(BQ27441* bq, uint16_t* power)
+bool BQ27441_Power(BQ27441* bq, int16_t* power)
 {
 	BQ27441Address address = {.Memory = COMMAND_POWER_AVG, .Mode = ADDRESS_MEMORY_8};
 	return bq->Read(bq->Device, address, power, sizeof(*power)) == sizeof(*power);
