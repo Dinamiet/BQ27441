@@ -57,7 +57,7 @@ typedef enum _BQ27441GPOUTFunction_
 {
 	BQ27441_GPOUT_SOC_INT,
 	BQ27441_GPOUT_BAT_LOW,
-} BQ27441GPOUTFunction;
+} BQ27441GPOUTMode;
 
 typedef enum _BQ27441GPOUTPolarity_
 {
@@ -144,6 +144,6 @@ bool BQ27441_Configure(BQ27441* bq, uint16_t capacity, uint16_t terminateVoltage
 
 /** GPIO Control commands */
 bool BQ27441_SetGPOUTPolarity(BQ27441* bq, BQ27441GPOUTPolarity polarity);
-bool BQ27441_SetGPOUT(BQ27441* bq, BQ27441GPOUTFunction func);
+bool BQ27441_SetGPOUTMode(BQ27441* bq, BQ27441GPOUTMode mode);
 
 #endif

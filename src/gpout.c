@@ -11,18 +11,18 @@ bool BQ27441_SetGPOUTPolarity(BQ27441* bq, BQ27441GPOUTPolarity polarity)
 		return true; // Already set
 
 	config.GPOUTPolarity = polarity;
-	return opconfig_Write(bq, &config);
+	return opconfig_Write(bq, config);
 }
 
-bool BQ27441_SetGPOUT(BQ27441* bq, BQ27441GPOUTFunction func)
+bool BQ27441_SetGPOUTMode(BQ27441* bq, BQ27441GPOUTMode mode)
 {
 	OpConfig config;
 	if (!opconfig_Read(bq, &config))
 		return false;
 
-	if (config.BatteryLowEnable == func)
+	if (config.BatteryLowEnable == mode)
 		return true; // Already set
 
-	config.BatteryLowEnable = func;
-	return opconfig_Write(bq, &config);
+	config.BatteryLowEnable = mode;
+	return opconfig_Write(bq, config);
 }
