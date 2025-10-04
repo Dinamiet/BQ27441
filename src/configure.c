@@ -16,7 +16,8 @@ bool BQ27441_Configure(BQ27441* bq, uint16_t capacity, uint16_t terminateVoltage
 	if (!extended_Write(bq, EXTENDED_STATE_CLASSID, EXTENDED_STATE_DESIGN_ENERGY_OFFSET, &writeValue, sizeof(writeValue)))
 		return false;
 
-	if (!extended_Write(bq, EXTENDED_STATE_CLASSID, EXTENDED_STATE_TERMINATE_VOLTAGE_OFFSET, &terminateVoltage, sizeof(terminateVoltage)))
+	writeValue = BIG_ENDIAN_16(terminateVoltage);
+	if (!extended_Write(bq, EXTENDED_STATE_CLASSID, EXTENDED_STATE_TERMINATE_VOLTAGE_OFFSET, &writeValue, sizeof(writeValue)))
 		return false;
 
 	writeValue = BIG_ENDIAN_16(taperRate);
