@@ -53,6 +53,18 @@ typedef enum _BQ27441ModeType_
 	BQ27441_MODE_CONFIGURE,
 } BQ27441ModeType;
 
+typedef enum _BQ27441GPOUTFunction_
+{
+	BQ27441_GPOUT_SOC_INT,
+	BQ27441_GPOUT_BAT_LOW,
+} BQ27441GPOUTFunction;
+
+typedef enum _BQ27441GPOUTPolarity_
+{
+	BQ27441_GPOUT_POLARITY_ACTIVE_LOW,
+	BQ27441_GPOUT_POLARITY_ACTIVE_HIGH,
+} BQ27441GPOUTPolarity;
+
 /** TODO: reference fields to datasheet, and comment each field in detail (same for other structures and enums) */
 typedef union _BQ27441Flags_
 {
@@ -131,6 +143,7 @@ bool BQ27441_EnterMode(BQ27441* bq, BQ27441ModeType mode);
 bool BQ27441_Configure(BQ27441* bq, uint16_t capacity, uint16_t terminateVoltage, uint16_t taperCurrent);
 
 /** GPIO Control commands */
-/** TODO: GPIO control */
+bool BQ27441_SetGPOUTPolarity(BQ27441* bq, BQ27441GPOUTPolarity polarity);
+bool BQ27441_SetGPOUT(BQ27441* bq, BQ27441GPOUTFunction func);
 
 #endif
