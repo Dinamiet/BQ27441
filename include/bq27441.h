@@ -146,4 +146,8 @@ bool BQ27441_Configure(BQ27441* bq, uint16_t capacity, uint16_t terminateVoltage
 bool BQ27441_SetGPOUTPolarity(BQ27441* bq, BQ27441GPOUTPolarity polarity);
 bool BQ27441_SetGPOUTMode(BQ27441* bq, BQ27441GPOUTMode mode);
 
+/** Thesholds */
+bool BQ27441_SetSOC1Threshold(BQ27441* bq, uint8_t setValue, uint8_t clearValue);
+bool BQ27441_SetSOCFThreshold(BQ27441* bq, uint8_t setValue, uint8_t clearValue);
+
 #endif
