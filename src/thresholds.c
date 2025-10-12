@@ -8,14 +8,14 @@ typedef struct _Threshold_
 	uint8_t Clear;
 } Threshold;
 
-bool BQ27441_SetSOC1Threshold(BQ27441* bq, uint8_t setValue, uint8_t clearValue)
+bool BQ27441_SetSOCLowThreshold(BQ27441* bq, uint8_t setValue, uint8_t clearValue)
 {
 	Threshold th = {.Set = setValue, .Clear = clearValue};
-	return extended_Write(bq, EXTENDED_DISCHARGE_CLASSID, EXTENDED_DISCHARGE_SOC1_OFFSET, &th, sizeof(th));
+	return extended_Write(bq, EXTENDED_DISCHARGE_CLASSID, EXTENDED_DISCHARGE_SOC_LOW_OFFSET, &th, sizeof(th));
 }
 
-bool BQ27441_SetSOCFThreshold(BQ27441* bq, uint8_t setValue, uint8_t clearValue)
+bool BQ27441_SetSOCCriticalThreshold(BQ27441* bq, uint8_t setValue, uint8_t clearValue)
 {
 	Threshold th = {.Set = setValue, .Clear = clearValue};
-	return extended_Write(bq, EXTENDED_DISCHARGE_CLASSID, EXTENDED_DISCHARGE_SOCF_OFFSET, &th, sizeof(th));
+	return extended_Write(bq, EXTENDED_DISCHARGE_CLASSID, EXTENDED_DISCHARGE_SOC_CRITICAL_OFFSET, &th, sizeof(th));
 }

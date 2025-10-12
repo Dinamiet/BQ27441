@@ -72,8 +72,8 @@ typedef union _BQ27441Flags_
 	struct
 	{
 		uint16_t Discharging              : 1;
-		uint16_t SOCFinalThreshold        : 1;
-		uint16_t SOCSetThreshold          : 1;
+		uint16_t SOCCriticalThreshold     : 1;
+		uint16_t SOCLowThreshold          : 1;
 		uint16_t BatteryDetected          : 1;
 		uint16_t ConfigUpdateMode         : 1;
 		uint16_t ResetOccured             : 1;
@@ -146,8 +146,8 @@ bool BQ27441_Configure(BQ27441* bq, uint16_t capacity, uint16_t terminateVoltage
 bool BQ27441_SetGPOUTPolarity(BQ27441* bq, BQ27441GPOUTPolarity polarity);
 bool BQ27441_SetGPOUTMode(BQ27441* bq, BQ27441GPOUTMode mode);
 
-/** Thesholds */
-bool BQ27441_SetSOC1Threshold(BQ27441* bq, uint8_t setValue, uint8_t clearValue);
-bool BQ27441_SetSOCFThreshold(BQ27441* bq, uint8_t setValue, uint8_t clearValue);
+/** SOC Thesholds */
+bool BQ27441_SetSOCLowThreshold(BQ27441* bq, uint8_t setValue, uint8_t clearValue);
+bool BQ27441_SetSOCCriticalThreshold(BQ27441* bq, uint8_t setValue, uint8_t clearValue);
 
 #endif
