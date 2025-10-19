@@ -3,39 +3,36 @@
 #include "commands.h"
 #include "sum8.h"
 
+#include <string.h>
+
 #define BLOCK_SIZE 32
+#define MAX_ATTEMPTS 5
 
 static bool blockData_Control(BQ27441* bq);
 static bool blockData_Class(BQ27441* bq, uint8_t id);
 static bool blockData_Offset(BQ27441* bq, uint8_t offset);
 static bool blockData_WriteChecksum(BQ27441* bq, uint8_t checksum);
+static bool blockData_ReadChecksum(BQ27441* bq, uint8_t* checksum);
 static bool blockData_Read(BQ27441* bq, uint8_t offset, void* data, size_t size);
 static bool blockData_Write(BQ27441* bq, uint8_t offset, void* data, size_t size);
 
 bool extended_Write(BQ27441* bq, uint8_t classID, uint8_t offset, void* data, size_t size)
 {
-	if (!blockData_Control(bq))
+	uint8_t blockData[BLOCK_SIZE];
+	if (!extended_Read(bq, classID, 0, blockData, sizeof(blockData)))
 		return false;
 
-	if (!blockData_Class(bq, classID))
-		return false;
-
-	if (!blockData_Offset(bq, offset / BLOCK_SIZE))
-		return false;
+	if (memcmp(&blockData[offset], data, size) == 0)
+		return true;
 
 	if (!blockData_Write(bq, offset % BLOCK_SIZE, data, size))
 		return false;
 
-	uint8_t blockData[BLOCK_SIZE];
-	if (!blockData_Read(bq, 0, blockData, sizeof(blockData)))
-		return false;
+	memcpy(&blockData[offset], data, size);
 
 	uint8_t checksum = ~SUM8(blockData, sizeof(blockData));
 
-	if (!blockData_WriteChecksum(bq, checksum))
-		return false;
-
-	return true;
+	return blockData_WriteChecksum(bq, checksum);
 }
 
 bool extended_Read(BQ27441* bq, uint8_t classID, uint8_t offset, void* data, size_t size)
@@ -49,7 +46,23 @@ bool extended_Read(BQ27441* bq, uint8_t classID, uint8_t offset, void* data, siz
 	if (!blockData_Offset(bq, offset / BLOCK_SIZE))
 		return false;
 
-	return blockData_Read(bq, offset % BLOCK_SIZE, data, size);
+	uint8_t attemptsRemain = MAX_ATTEMPTS;
+	while (attemptsRemain--)
+	{
+		if (!blockData_Read(bq, offset % BLOCK_SIZE, data, size))
+			return false;
+
+		uint8_t checksum;
+		if (!blockData_ReadChecksum(bq, &checksum))
+			return false;
+
+		uint8_t calculatedChecksum = ~SUM8(data, size);
+
+		if (checksum == calculatedChecksum)
+			return true;
+	}
+
+	return false;
 }
 
 static bool blockData_Control(BQ27441* bq)
@@ -75,6 +88,12 @@ static bool blockData_WriteChecksum(BQ27441* bq, uint8_t checksum)
 {
 	BQ27441Address address = {.Memory = EXTENDED_DATA_CHECKSUM, .Mode = ADDRESS_MEMORY_8};
 	return bq->Write(bq->Device, address, &checksum, sizeof(checksum)) == sizeof(checksum);
+}
+
+static bool blockData_ReadChecksum(BQ27441* bq, uint8_t* checksum)
+{
+	BQ27441Address address = {.Memory = EXTENDED_DATA_CHECKSUM, .Mode = ADDRESS_MEMORY_8};
+	return bq->Read(bq->Device, address, checksum, sizeof(*checksum)) == sizeof(*checksum);
 }
 
 static bool blockData_Read(BQ27441* bq, uint8_t offset, void* data, size_t size)
