@@ -19,6 +19,7 @@ typedef struct _BQ27441Address_
 
 typedef size_t (*BQ27441_ReadInterface)(const BQ27441Device* device, const BQ27441Address address, void* data, const size_t size);
 typedef size_t (*BQ27441_WriteInterface)(const BQ27441Device* device, const BQ27441Address address, const void* data, const size_t size);
+typedef void (*BQ27441_WaitInterface)(size_t us);
 
 typedef enum _BQ27441CurrentType_
 {
@@ -116,9 +117,10 @@ typedef struct _BQ27441_
 	const BQ27441Device*   Device;
 	BQ27441_ReadInterface  Read;
 	BQ27441_WriteInterface Write;
+	BQ27441_WaitInterface  Wait;
 } BQ27441;
 
-void BQ27441_Init(BQ27441* bq, const BQ27441Device* device, const BQ27441_ReadInterface read_interface, const BQ27441_WriteInterface write_interface);
+void BQ27441_Init(BQ27441* bq, const BQ27441Device* device, const BQ27441_ReadInterface read_interface, const BQ27441_WriteInterface write_interface, const BQ27441_WaitInterface wait_interface);
 
 /** Standard commands */
 bool BQ27441_Voltage(BQ27441* bq, uint16_t* voltage);

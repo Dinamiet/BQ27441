@@ -6,7 +6,7 @@
 #include <string.h>
 
 #define BLOCK_SIZE 32
-#define MAX_ATTEMPTS 5
+#define WAIT_TIME  128 // Double time specified in datasheet (66us)
 
 static bool blockData_Control(BQ27441* bq);
 static bool blockData_Class(BQ27441* bq, uint8_t id);
@@ -46,23 +46,18 @@ bool extended_Read(BQ27441* bq, uint8_t classID, uint8_t offset, void* data, siz
 	if (!blockData_Offset(bq, offset / BLOCK_SIZE))
 		return false;
 
-	uint8_t attemptsRemain = MAX_ATTEMPTS;
-	while (attemptsRemain--)
-	{
-		if (!blockData_Read(bq, offset % BLOCK_SIZE, data, size))
-			return false;
+	bq->Wait(WAIT_TIME);
 
-		uint8_t checksum;
-		if (!blockData_ReadChecksum(bq, &checksum))
-			return false;
+	if (!blockData_Read(bq, offset % BLOCK_SIZE, data, size))
+		return false;
 
-		uint8_t calculatedChecksum = ~SUM8(data, size);
+	uint8_t checksum;
+	if (!blockData_ReadChecksum(bq, &checksum))
+		return false;
 
-		if (checksum == calculatedChecksum)
-			return true;
-	}
+	uint8_t calculatedChecksum = ~SUM8(data, size);
 
-	return false;
+	return checksum == calculatedChecksum;
 }
 
 static bool blockData_Control(BQ27441* bq)
